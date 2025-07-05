@@ -1,5 +1,6 @@
 from openai import OpenAI
 
+//
 client = OpenAI(
 	api_key="lm-studio",  # 固定写法
 	base_url="http://10.0.0.62:1234/v1"
@@ -12,7 +13,9 @@ response = client.chat.completions.create(
 		{"role": "user", "content": "Why linus does not use C++ in linux but use rust"}
 	],
 	temperature=0.7,
-	stream=False
+	stream=True
 )
 
-print(response.choices[0].message.content)
+for chunk in response:
+	if chunk.choices[0].delta.content:
+		print(chunk.choices[0].delta.content, end="", flush=True)
