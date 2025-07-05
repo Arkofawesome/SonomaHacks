@@ -9,7 +9,7 @@ response = client.chat.completions.create(
 	model="google/gemma-3-12b",
 	messages=[
 		{"role": "system", "content": "You are a useful ai"},
-		{"role": "user", "content": "To C or not to C that is the question"}
+		{"role": "user", "content": "Why linus does not use C++ in linux but use rust"}
 	],
 	temperature=0.7,
 	stream=False
