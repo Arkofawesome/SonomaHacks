@@ -10,7 +10,7 @@ java_app = gateway.entry_point
 
 # Connect to LM Studio's local server
 client = OpenAI(
-	base_url="http://192.168.1.245:1234/v1",  # LM Studio's default API server
+	base_url="http://10.0.0.62:1234/v1",  # LM Studio's default API server
 	api_key="lm-studio"  # Dummy key required
 )
 
