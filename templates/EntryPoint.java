@@ -1,6 +1,8 @@
 import py4j.Gateway;
 import py4j.GatewayServer;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.List;
 
 public class EntryPoint{
@@ -11,7 +13,7 @@ public class EntryPoint{
             this_User.setDescription(summary);
         }else{
             Manager.Signup(Phone_number, Password, summary);
-            System.out.println("Signup complete");
+            System.out.println(Phone_number + " Sign up complete");
         }
     }
 
@@ -32,8 +34,14 @@ public class EntryPoint{
         return Manager.getUsers().get(i).getPhone_number();
     }
 
-    public static void main(String[] args){
-        GatewayServer server = new GatewayServer(new EntryPoint(), 25333);
+    public static void main(String[] args) throws UnknownHostException {
+        EntryPoint entryPoint = new EntryPoint();
+        InetAddress address = InetAddress.getByName("0.0.0.0");
+        GatewayServer server = new GatewayServer.GatewayServerBuilder()
+                .entryPoint(entryPoint)
+                .javaPort(25333)
+                .javaAddress(InetAddress.getByName("0.0.0.0")) // Accept connections from any IP
+                .build();
         server.start();
         System.out.println("Gateway Server Started on port 25333");
     }
