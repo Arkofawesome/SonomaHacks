@@ -51,7 +51,7 @@ def end_sequence():
 			{"role": "User","content": "Only gives me the percentage of following two person, do not add any other word and symbols include %, 1," + summary_text + "\n 2," + java_app.getSummary(i)}
 		]
 		if(int(Matching) >= 50):
-			lists += i + "," + java_app.getPhone_Number + "\n"
+			lists += str(i) + "," + java_app.getPhone_Number + "\n"
 
 	if lists == " ":
 		print("Sorry, there's no one matching with you\n")
