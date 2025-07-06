@@ -2,28 +2,31 @@ import py4j.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class UserManager {
-    private List<User> users = new ArrayList<>();
-    private Scanner scanner = new Scanner(System.in);
+    public List<User> users = new ArrayList<>();
 
     //Register a new user
-    public void Signup(String Phone_number, String Password, String Description){
+    public User Signup(String Phone_number, String Password, String Description){
         users.add(new User(Phone_number, Password, Description));
-        System.out.println("You successfully logged in");
+        System.out.println("You successfully registered in");
+        return users.getLast();
     }
 
-    public boolean Login(String Phone_number, String Password, String Description){
+    public User Login(String Phone_number, String Password, String Description){
         for(int i = 0; i < users.size();i++){
             if(users.get(i).getPhone_number().equals(Phone_number)){
                 if(users.get(i).getPassword().equals(Password)){
-                    return true;
+                    return users.get(i);
                 }else{
-                    return false;
+                    return null;
                 }
             }
         }
-        return false;
+        return null;
+    }
+
+    public List<User> getUsers(){
+        return users;
     }
 }
