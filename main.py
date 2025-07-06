@@ -1,18 +1,50 @@
-# This is a sample Python script.
+from openai import OpenAI
+import os
 
-# Press ⌃R to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
+# Connect to LM Studio's local server
+client = OpenAI(
+	base_url="http://10.0.0.62:1234/v1",  # LM Studio's default API server
+	api_key="lm-studio"  # Dummy key required
+)
+
+# Initialize conversation history
+conversation = [
+	{"role": "system", "content": "You are a helpful assistant."},
+	{"role": "system", "content": "You are a therapist and should assess the hobbies of the user, traits of the user, and impactful experiences"}
+
+]
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press F9 to toggle the breakpoint.
+#end sequence make into method
+ending = [
+	{"role": "system", "content": "make a summary of everything you know of me"}
+	#this is where you can use the py4j to transfer the data
+]
 
-def print_hi1(name):
-    print('tell me why' + ' 1223123')
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-    print_hi1('To C or not to C, that is the question')
+while True:
+	user_input = input("You: ")
+	if user_input.lower() in ["exit", "quit", "bye"]:
+		ending#add the method
+		print("Bot: Goodbye! 👋")
+		break
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+	conversation.append({"role": "user", "content": user_input})
+
+	# Stream the assistant's response
+	print("Bot: ", end="", flush=True)
+	stream = client.chat.completions.create(
+		model="google/gemma-3-12b",  # e.g., "llama-3.2-1b-instruct"
+		messages=conversation,
+		temperature=0.7,
+		stream=True
+	)
+
+	full_reply = ""
+	for chunk in stream:
+		if chunk.choices[0].delta.content:
+			token = chunk.choices[0].delta.content
+			print(token, end="", flush=True)
+			full_reply += token
+
+	print()  # Newline after full response
+	conversation.append({"role": "assistant", "content": full_reply})
